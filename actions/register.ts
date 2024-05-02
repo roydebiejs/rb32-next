@@ -1,8 +1,9 @@
 "use server";
 import * as z from "zod";
 import { RegisterSchema } from "@/schemas";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
+import { getUserByEmail, getUserByUsername } from "@/data/user";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values);
@@ -14,21 +15,13 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const { email, username, password } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const existingEmail = await db.user.findUnique({
-    where: {
-      email,
-    },
-  });
+  const existingEmail = await getUserByEmail(email);
 
   if (existingEmail) {
     return { error: "Email address already exists" };
   }
 
-  const existingUsername = await db.user.findUnique({
-    where: {
-      username,
-    },
-  });
+  const existingUsername = await getUserByUsername(username);
 
   if (existingUsername) {
     return { error: "Username already exists" };
