@@ -19,7 +19,8 @@ import {
 import { Button } from "../ui/button";
 import { FormError } from "@/components/FormError";
 import { FormSuccess } from "@/components/FormSuccess";
-import { register } from "@/actions/register";
+import { register, registerWithGoogle } from "@/actions/register";
+import { FcGoogle } from "react-icons/fc";
 
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -28,7 +29,7 @@ export const RegisterForm = () => {
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
-    defaultValues: { email: "", password: "", username: "" },
+    defaultValues: { email: "", password: "", name: "" },
   });
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
@@ -66,11 +67,11 @@ export const RegisterForm = () => {
                 )}
               />
               <FormField
-                name="username"
+                name="name"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -108,6 +109,17 @@ export const RegisterForm = () => {
             <FormSuccess message={success} />
             <Button type="submit" variant="default" className="w-full">
               Register
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              className="w-full"
+              onClick={() => {
+                registerWithGoogle();
+              }}
+            >
+              <FcGoogle className="w-6 h-6 mr-2" />
+              Register with Google
             </Button>
           </form>
           <p className="mt-10 text-center text-sm text-gray-500">

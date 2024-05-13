@@ -3,7 +3,10 @@ import * as z from "zod";
 import { RegisterSchema } from "@/schemas";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
-import { getUserByEmail, getUserByUsername } from "@/data/user";
+import { getUserByEmail } from "@/data/user";
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values);
@@ -12,7 +15,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: "Invalid fields" };
   }
 
-  const { email, username, password } = validatedFields.data;
+  const { email, name, password } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const existingEmail = await getUserByEmail(email);
@@ -21,19 +24,32 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: "Email address already exists" };
   }
 
-  const existingUsername = await getUserByUsername(username);
-
-  if (existingUsername) {
-    return { error: "Username already exists" };
-  }
-
   await db.user.create({
     data: {
-      username,
+      name,
       email,
       password: hashedPassword,
+      emailVerified: null,
     },
   });
 
   return { success: "Account created successfully" };
+};
+
+export const registerWithGoogle = async () => {
+  try {
+    await signIn("google", {
+      callbackUrl: DEFAULT_LOGIN_REDIRECT,
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return { error: "Invalid credentials" };
+        default:
+          return { error: "An error occurred" };
+      }
+    }
+    throw error;
+  }
 };

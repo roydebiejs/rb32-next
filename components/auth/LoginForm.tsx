@@ -18,13 +18,12 @@ import {
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
 import { FormError } from "@/components/FormError";
-import { FormSuccess } from "@/components/FormSuccess";
-import { login } from "@/actions/login";
+import { login, loginWithGoogle } from "@/actions/login";
+import { FcGoogle } from "react-icons/fc";
 
 export const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>(undefined);
-  const [success, setSuccess] = useState<string | undefined>(undefined);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -87,13 +86,23 @@ export const LoginForm = () => {
               />
             </div>
             <FormError message={error} />
-            <FormSuccess message={success} />
             <Button type="submit" variant="default" className="w-full">
               Log in
             </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              className="w-full"
+              onClick={() => {
+                loginWithGoogle();
+              }}
+            >
+              <FcGoogle className="w-6 h-6 mr-2" />
+              Log in with Google
+            </Button>
           </form>
           <p className="mt-10 text-center text-sm text-gray-500">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               href="/register"
               className="font-semibold leading-6 text-emerald-600 hover:text-emerald-500"
