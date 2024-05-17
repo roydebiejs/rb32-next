@@ -35,21 +35,3 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
 
   return { success: "Account created successfully" };
 };
-
-export const registerWithGoogle = async () => {
-  try {
-    await signIn("google", {
-      callbackUrl: DEFAULT_LOGIN_REDIRECT,
-    });
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return { error: "Invalid credentials" };
-        default:
-          return { error: "An error occurred" };
-      }
-    }
-    throw error;
-  }
-};

@@ -19,8 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
 import { FormError } from "@/components/FormError";
-import { login, loginWithGoogle } from "@/actions/login";
-import { FcGoogle } from "react-icons/fc";
+import { login } from "@/actions/login";
 
 export const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -94,17 +93,6 @@ export const LoginForm = () => {
             <FormError message={error || urlError} />
             <Button type="submit" variant="default" className="w-full">
               Log in
-            </Button>
-            <Button
-              type="button"
-              variant="secondary"
-              className="w-full"
-              onClick={() => {
-                loginWithGoogle();
-              }}
-            >
-              <FcGoogle className="w-6 h-6 mr-2" />
-              Log in with Google
             </Button>
           </form>
           <p className="mt-10 text-center text-sm text-gray-500">
