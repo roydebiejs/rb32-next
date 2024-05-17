@@ -40,3 +40,11 @@ model VerificationToken {
   expires   DateTime
   @@unique([token, email])
 }
+
+model PasswordResetToken {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  token     String @unique
+  email     String
+  expires   DateTime
+  @@unique([token, email])
+}

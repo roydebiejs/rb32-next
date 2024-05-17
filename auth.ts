@@ -38,7 +38,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // Prevent sign in if user is not verified
       if (!existingUser?.emailVerified) return false;
 
-      // TO DO: Add 2FA check here
+      // TODO: Add 2FA check here
 
       return true;
     },
