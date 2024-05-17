@@ -20,10 +20,12 @@ import {
 import { Button } from "../ui/button";
 import { FormError } from "@/components/FormError";
 import { login } from "@/actions/login";
+import { FormSuccess } from "../FormSuccess";
 
 export const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>(undefined);
+  const [success, setSuccess] = useState<string | undefined>(undefined);
   const searchParams = useSearchParams();
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
@@ -40,6 +42,7 @@ export const LoginForm = () => {
       login(values).then((data) => {
         if (data) {
           setError(data.error);
+          setSuccess(data.success);
         }
       });
     });
@@ -91,6 +94,7 @@ export const LoginForm = () => {
               />
             </div>
             <FormError message={error || urlError} />
+            <FormSuccess message={success} />
             <Button type="submit" variant="default" className="w-full">
               Log in
             </Button>

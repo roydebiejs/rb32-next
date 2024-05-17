@@ -33,6 +33,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
   },
   callbacks: {
+    async signIn({ user }) {
+      const existingUser = await getUserById(user.id as string);
+      // Prevent sign in if user is not verified
+      if (!existingUser?.emailVerified) return false;
+
+      // TO DO: Add 2FA check here
+
+      return true;
+    },
     async session({ token, session }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
