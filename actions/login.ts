@@ -90,6 +90,8 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       password,
       redirect: true,
       redirectTo: DEFAULT_LOGIN_REDIRECT,
+    }).then(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
     });
   } catch (error) {
     if (error instanceof AuthError) {
