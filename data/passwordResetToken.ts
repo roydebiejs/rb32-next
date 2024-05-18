@@ -3,11 +3,11 @@ import { PasswordResetToken } from "@prisma/client";
 
 export const getPasswordResetTokenByToken = async (token: string) => {
   try {
-    const passwordResetToken = (await db.passwordResetToken.findUnique({
+    const passwordResetToken = await db.passwordResetToken.findUnique({
       where: {
         token,
       },
-    })) as PasswordResetToken;
+    });
 
     return passwordResetToken;
   } catch {
@@ -17,11 +17,11 @@ export const getPasswordResetTokenByToken = async (token: string) => {
 
 export const getPasswordResetTokenByEmail = async (email: string) => {
   try {
-    const passwordResetToken = (await db.passwordResetToken.findFirst({
+    const passwordResetToken = await db.passwordResetToken.findFirst({
       where: {
         email,
       },
-    })) as PasswordResetToken;
+    });
 
     return passwordResetToken;
   } catch {

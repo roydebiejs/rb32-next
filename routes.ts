@@ -10,7 +10,13 @@ export const publicRoutes: string[] = ["/", "/emailverification"];
  * These routes will redirect logged in users to the settings page
  * @type {string[]}
  */
-export const authRoutes: string[] = ["/login", "/register", "/error", "/reset"];
+export const authRoutes: string[] = [
+  "/login",
+  "/register",
+  "/error",
+  "/resetpassword",
+  "/updatepassword",
+];
 
 /**
  * The prefix for for API authentication routes

@@ -99,7 +99,7 @@ export const LoginForm = () => {
               Log in
             </Button>
             <div className="mt-1">
-              <Link href="/reset">
+              <Link href="/resetpassword">
                 <Button variant="link" className="w-full">
                   Forgot password?
                 </Button>

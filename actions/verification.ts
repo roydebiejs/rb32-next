@@ -6,9 +6,7 @@ import { User, VerificationToken } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 export const verification = async (token: string) => {
-  const existingToken = (await getVerificationTokenByToken(
-    token
-  )) as VerificationToken;
+  const existingToken = await getVerificationTokenByToken(token);
 
   if (!existingToken) {
     return { error: "Token does not exist" };
@@ -20,7 +18,7 @@ export const verification = async (token: string) => {
     return { error: "Token has expired" };
   }
 
-  const existingUser = (await getUserByEmail(existingToken.email)) as User;
+  const existingUser = await getUserByEmail(existingToken.email);
 
   if (!existingUser) {
     return { error: "Email does not exist" };
