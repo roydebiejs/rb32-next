@@ -10,7 +10,7 @@ const DashboardPage = () => {
   // For some reason this is necessary to make sure the session is loaded
   // It looks like setting the session takes longer than the initial render
   if (!user) {
-    redirect("/dashboard");
+    location.reload();
   }
 
   return (
